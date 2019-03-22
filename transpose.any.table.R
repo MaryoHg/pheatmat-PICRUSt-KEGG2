@@ -1,6 +1,6 @@
-## THIS FUNCTION TRANSPOSE DATA FROM WIDE TO "TRANSPOSE WIDE FORMAT".
+## THIS FUNCTION TRANSPOSE A WIDE DATAFRAME TO "TRANSPOSED WIDE FORMAT".
 ## HOW TO USE: transpose.table (data.frame)
-## The format use has input is as follow:
+## input format is as follow:
 ##      Taxon   Sample_A        Sample_B        Sample_C        Sample_n
 ##      taxoni  count           count           count           count_n
 ##	...	count		count		count		count_n
