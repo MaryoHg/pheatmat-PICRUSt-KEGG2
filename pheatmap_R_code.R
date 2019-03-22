@@ -5,22 +5,22 @@
 ## 1. Packages and functions
 options(scipen = 100000000) ## avoid scientific annotation (e+) values.
 library(pheatmap)
-source('/home/mario/Dropbox/R_functions/summarySE.R')
-source('/home/mario/Dropbox/R_functions/tranpose.any.table.R')
+source('summarySE.R')
+source('tranpose.any.table.R')
 
 ## 2. dataframe: complete data frame with KEGG2 values.
-K2 <- read.delim('/home/mario/Documents/Doctorado/PROYECTOS/Maryo_Hg/ammonia/downstream/picrust_3000/KEGG2_LONG_FINAL_DATA.txt')
+K2 <- read.delim('KEGG2_LONG_FINAL_DATA.txt')
 colnames(K2)
 
 
-## 3. Sorting data to better visualize the tratments.
+## 3. Sorting data to better visualize the tratments: optional.
         
         ##Sort data with dynamic, days, and dynTreat:
         K2.sorted <- K2[order(K2$dynamic, K2$days, K2$dynTREATday),]
         View(K2.sorted)
         
 
-## 4. AVERAGE, SD and SE for all treatments:
+## 4. mean, sd and se values calculation for all treatments:
 K2.sorted.average <- summarySE(data = K2.sorted,  measurevar = "log10x",
                                groupvars = c("dynamic", "Level_2", "Treatment", "days"),
                                na.rm = T)
@@ -32,25 +32,22 @@ View(K2.sorted.average)
         length(levels(K2.sorted.average$label)) # 96 valores únicos.
         
         ## b. adding LABEL (unique and ordered label to heatmap) with CONDITIONALS:
-        #indata <- c("am.CT0.0", "am.CT0.1", "am.CT0.3", "am.CT0.5", "am.CT0.7", "am.CT0.14", "am.CT0.28", "am.CT0.56", "am.CT3.0", "am.CT3.1", "am.CT3.3", "am.CT3.5", "am.CT3.7", "am.CT3.14", "am.CT3.28", "am.CT3.56", "am.PBB0.0", "am.PBB0.1", "am.PBB0.3", "am.PBB0.5", "am.PBB0.7", "am.PBB0.14", "am.PBB0.28", "am.PBB0.56", "am.PBB3.0", "am.PBB3.1", "am.PBB3.3", "am.PBB3.5", "am.PBB3.7", "am.PBB3.14", "am.PBB3.28", "am.PBB3.56", "am.PBC0.0", "am.PBC0.1", "am.PBC0.3", "am.PBC0.5", "am.PBC0.7", "am.PBC0.14", "am.PBC0.28", "am.PBC0.56", "am.PBC3.0", "am.PBC3.1", "am.PBC3.3", "am.PBC3.5", "am.PBC3.7", "am.PBC3.14", "am.PBC3.28", "am.PBC3.56", "un.CT0.0", "un.CT0.1", "un.CT0.3", "un.CT0.5", "un.CT0.7", "un.CT0.14", "un.CT0.28", "un.CT0.56", "un.CT3.0", "un.CT3.1", "un.CT3.3", "un.CT3.5", "un.CT3.7", "un.CT3.14", "un.CT3.28", "un.CT3.56", "un.PBB0.0", "un.PBB0.1", "un.PBB0.3", "un.PBB0.5", "un.PBB0.7", "un.PBB0.14", "un.PBB0.28", "un.PBB0.56", "un.PBB3.0", "un.PBB3.1", "un.PBB3.3", "un.PBB3.5", "un.PBB3.7", "un.PBB3.14", "un.PBB3.28", "un.PBB3.56", "un.PBC0.0", "un.PBC0.1", "un.PBC0.3", "un.PBC0.5", "un.PBC0.7", "un.PBC0.14", "un.PBC0.28", "un.PBC0.56", "un.PBC3.0", "un.PBC3.1", "un.PBC3.3", "un.PBC3.5", "un.PBC3.7", "un.PBC3.14", "un.PBC3.28", "un.PBC3.56")
-        #newlabel <- c("A1", "A11", "A12", "A13", "A14", "A15", "A16", "A17", "C1", "C11", "C12", "C13", "C14", "C15", "C16", "C17", "E1", "E11", "E12", "E13", "E14", "E15", "E16", "E17", "G1", "G11", "G12", "G13", "G14", "G15", "G16", "G17", "I1", "I11", "I12", "I13", "I14", "I15", "I16", "I17", "K1", "K11", "K12", "K13", "K14", "K15", "K16", "K17", "B1", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "D1", "D11", "D12", "D13", "D14", "D15", "D16", "D17", "F1", "F11", "F12", "F13", "F14", "F15", "F16", "F17", "H1", "H11", "H12", "H13", "H14", "H15", "H16", "H17", "J1", "J11", "J12", "J13", "J14", "J15", "J16", "J17", "L1", "L11", "L12", "L13", "L14", "L15", "L16", "L17")
+
         indata <- c("am.CT0.0", "am.CT0.1", "am.CT0.3", "am.CT0.5", "am.CT0.7", "am.CT0.14", "am.CT0.28", "am.CT0.56", "un.CT0.0", "un.CT0.1", "un.CT0.3", "un.CT0.5", "un.CT0.7", "un.CT0.14", "un.CT0.28", "un.CT0.56", "am.CT3.0", "am.CT3.1", "am.CT3.3", "am.CT3.5", "am.CT3.7", "am.CT3.14", "am.CT3.28", "am.CT3.56", "un.CT3.0", "un.CT3.1", "un.CT3.3", "un.CT3.5", "un.CT3.7", "un.CT3.14", "un.CT3.28", "un.CT3.56", "am.PBB0.0", "am.PBB0.1", "am.PBB0.3", "am.PBB0.5", "am.PBB0.7", "am.PBB0.14", "am.PBB0.28", "am.PBB0.56", "un.PBB0.0", "un.PBB0.1", "un.PBB0.3", "un.PBB0.5", "un.PBB0.7", "un.PBB0.14", "un.PBB0.28", "un.PBB0.56", "am.PBB3.0", "am.PBB3.1", "am.PBB3.3", "am.PBB3.5", "am.PBB3.7", "am.PBB3.14", "am.PBB3.28", "am.PBB3.56", "un.PBB3.0", "un.PBB3.1", "un.PBB3.3", "un.PBB3.5", "un.PBB3.7", "un.PBB3.14", "un.PBB3.28", "un.PBB3.56", "am.PBC0.0", "am.PBC0.1", "am.PBC0.3", "am.PBC0.5", "am.PBC0.7", "am.PBC0.14", "am.PBC0.28", "am.PBC0.56", "un.PBC0.0", "un.PBC0.1", "un.PBC0.3", "un.PBC0.5", "un.PBC0.7", "un.PBC0.14", "un.PBC0.28", "un.PBC0.56", "am.PBC3.0", "am.PBC3.1", "am.PBC3.3", "am.PBC3.5", "am.PBC3.7", "am.PBC3.14", "am.PBC3.28", "am.PBC3.56", "un.PBC3.0", "un.PBC3.1", "un.PBC3.3", "un.PBC3.5", "un.PBC3.7", "un.PBC3.14", "un.PBC3.28", "un.PBC3.56")
-        
         newlabel <- c("A1", "A11", "A12", "A13", "A14", "A15", "A16", "A17", "B1", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "C1", "C11", "C12", "C13", "C14", "C15", "C16", "C17", "D1", "D11", "D12", "D13", "D14", "D15", "D16", "D17", "E1", "E11", "E12", "E13", "E14", "E15", "E16", "E17", "F1", "F11", "F12", "F13", "F14", "F15", "F16", "F17", "G1", "G11", "G12", "G13", "G14", "G15", "G16", "G17", "H1", "H11", "H12", "H13", "H14", "H15", "H16", "H17", "I1", "I11", "I12", "I13", "I14", "I15", "I16", "I17", "J1", "J11", "J12", "J13", "J14", "J15", "J16", "J17", "K1", "K11", "K12", "K13", "K14", "K15", "K16", "K17", "L1", "L11", "L12", "L13", "L14", "L15", "L16", "L17")
-        
-        
+     
         K2.sorted.average$LABEL <- newlabel [match(K2.sorted.average$label, indata)]
         View(K2.sorted.average)
         
         
-## Long to wide data to be able to use pheatmap:
+## 5. Long to wide data to be able to use pheatmap:
         library (tidyr)
         colnames(K2.sorted.average)
         data_mat <- spread (data = K2.sorted.average[,c(2,6,11)],
                            key = "LABEL",
                            value = "log10x")
         
-        data_mat <- data_mat[-4,] ## QUITAMOS 'Cell Communication'.
+        data_mat <- data_mat[-4,] ## avoid 'Cell Communication', due to low values.
         rownames(data_mat) <- data_mat[,1]
         View(data_mat)
         
@@ -59,12 +56,10 @@ View(K2.sorted.average)
         #View(data_mat_order)
         #rownames(data_mat_order) <- data_mat[,1]
         
-        ## Heatmap with annotation: loading annotation mapping file
-        annotation <- read.csv('/home/mario/Documents/Doctorado/PROYECTOS/Maryo_Hg/ammonia/downstream/picrust_3000/annotation.csv',
-                               header = T, sep = ',')
-        colnames(annotation)
+## 6. Heatmap with annotation: loading annotation mapping file
+        annotation <- read.csv('annotation.csv', header = T, sep = ',')
         rownames(annotation) <- annotation$LABEL
-        annotation <- annotation[c(6, 4, 5)]
+        annotation <- annotation[c(6, 4, 5)] ## We take only annotations variables for heatmap.
 
         ## Specify colors editing annotation ¡VARIABLES!:
         dyn <- c('black', 'white')
@@ -83,22 +78,29 @@ View(K2.sorted.average)
         names (Treats) <- c("CT0", 'CT3', 'PBB0', 'PBB3', 'PBC0', 'PBC3')
         Treats
         
-        ann_colors = list(treatment = Treats, ammonia=dyn, days = days)
+        ann_colors = list(treatment = Treats, ammonia=dyn, days = days) ## Be careful with the order. This order annotation will show.
         ann_colors
         
-                ## This heatmap uses the default color palette for pheatmap()
-        pheatmap(data_mat[,2:ncol(data_mat)],
-                 annotation = annotation, annotation_colors = ann_colors,
-                 cluster_cols = F, cluster_rows = T, fontsize = 8,
-                 cellwidth = 6.35, cellheight = 16, facefont='italic',
-                 show_colnames = F, cutree_rows = 3,
-                 filename = 'KEGG2_HEATMAP_FINAL.png') #to save it as pdf, png, etc.)
-                # options to control the color range for heatmap value:
+## 7. Heatmap drawing: usinig default color palette for pheatmap() package.
+        pheatmap(data_mat[,2:ncol(data_mat)],           
+                 annotation = annotation,               ## annotation file variables.
+                 annotation_colors = ann_colors,        ## Colors assigned to annotation variables.
+                 cluster_cols = F,                      ## No cluster in variables (columns)                              
+                 cluster_rows = T,                      ## Draw cluster for treatments (observations or rows).
+                 fontsize = 8,                          
+                 cellwidth = 6.35, cellheight = 16,             
+                 facefont='italic',             
+                 show_colnames = F,
+                 cutree_rows = 3,                       ## n cluster observations to be splitted.
+                 filename = 'KEGG2_HEATMAP_FINAL.png')  ## save it as pdf, png, etc.
+
+                ##options to control the color range for heatmap value:
                 #legend_breaks=0:6,legend_labels=c(0,1,2,3,4,5,6))
                 #
-        dev.off()
+        dev.off()                                       ## graphics.off()
 
-                ## Editing the color palette for the same heatmap.
+
+## 8. OPTIONAL HEATMAP: Editing the color palette for the same heatmap. ¡no annotation!
         pheatmap(data_mat[,2:ncol(data_mat)], 
                  annotation = annotation, annotation_colors = ann_colors,
                  cluster_cols = F, cluster_rows = T, fontsize = 8,
@@ -124,7 +126,7 @@ View(K2.sorted.average)
 #########################
 #########################
         ## this does not work anymore.
-## 5. Creating Factor column to heatmap:
+## 9. Creating Factor column to heatmap: geom_tiles() with ggplot2. ¡Not so cool!
         ## divide data into deciles: 10 groups
         library (dplyr)
         data <- K2.sorted.average
@@ -192,59 +194,4 @@ View(K2.sorted.average)
 
 
 #################################################
-#################################################        
-## LONG to wide format for KEGG L2:
-
-## a. Separated by dynamic
-am.average <- subset(K2.sort.average, dynamic == "am")
-am.average$label <- paste (am.average$Treatment, am.average$days, sep = '.')
-
-un.average <- subset(K2.sort.average, dynamic == "un")
-un.average$label <- paste (am.average$Treatment, am.average$days, sep = '.')
-
-## b. long to wide for both dynamics:
-am.K2_mat <- spread (data = am.average[,c(2,6,10)],
-                     key = "label",
-                     value = "log10x")
-
-un.K2_mat <- spread (data = un.average[,c(2,6,10)],
-                     key = 'label',
-                     value = 'log10x')
-View(un.K2_mat)
-
-## Calculate the total assigned reads for all samples.
-sum(rowSums(KEGG_L2_READS[,2:ncol(KEGG_L2_READS)]))
-
-## save the MEAN dataframe
-write.table(KEGG_L2_READS, '/home/mario/Documents/Doctorado/PROYECTOS/Maryo_Hg/ammonia/downstream/picrust_3000/LUC_PICRUSt/KEGGL2_dynam_day_treatm_ASSIGNED_READS.txt',
-            sep = '\t', row.names = F)
-
-
-
 #################################################
-#################################################
-## Editing to final data to create heatmap.
-##6. Working with amended dynamic:
-am.average$observations <- paste(am.average$Treatment, am.average$days, sep = '.')
-View(am.average)
-am.average <- am.average[,c(2,6,10)]
-library(tidyr)
-am.data <- spread (data = am.average,
-                   key = "Level_2",
-                   value = "logproptrans")
-View(am.data)
-getwd()
-#        write.table(am.data, '/home/mario/Documents/Doctorado/PROYECTOS/Maryo_Hg/ammonia/downstream/picrust_3000/me_working/am_kegg2_log+1_to_heatmap.csv',
-#                    sep = ',', row.names = F) #was manually edited; be careful.
-
-## 7. Working with unamended dynamic:
-un.average$Observations <- paste (un.average$Treatment, un.average$days, sep = '.')
-View(un.average)
-un.average <- un.average[,c(2,6,10)]
-library(tidyr)                        
-un.data <- spread (data = un.average,
-                   key = 'Level_2',
-                   value = 'logproptrans')        
-View (un.data)
-#        write.table(am.data, '/home/mario/Documents/Doctorado/PROYECTOS/Maryo_Hg/ammonia/downstream/picrust_3000/me_working/un_kegg2_log+1_to_heatmap.csv',
-#                    sep = ',', row.names = F) #was manually edited; be careful.
