@@ -1,3 +1,7 @@
+## NOTE: This function was took from the Cookbook R web page:
+## See http://www.cookbook-r.com/Graphs/Plotting_means_and_error_bars_(ggplot2)/
+## If used, please cite: Winston Chang (2013). R Graphics Cookbook. O'Reilly Media.
+
 ## Summarizes data.
 ## Gives count, mean, standard deviation, standard error of the mean, and confidence interval (default 95%).
 ##   data: a data frame.
